@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Langchain, Pinecone, and GPT with Next.js - Full Stack Starter
+This is a basic starter project for building with the following tools and APIs:
 
-## Getting Started
+Next.js
+LangchainJS
+Pineceone Vector Database
+GPT3
+When I started diving into all of this, I felt while I understood some of the individual pieces, it was hard to piece together everything into a cohesive project. I hope this project is useful for anyone looking to build with this stack, and just needing something to start with.
 
-First, run the development server:
+What we're building
+We are building an app that takes text (text files), embeds them into vectors, stores them into Pinecone, and allows semantic searching of the data.
 
-```bash
+For anyone wondering what Semantic search is, here is an overview (taken directly from ChatGPT4):
+
+Semantic search refers to a search approach that understands the user's intent and the contextual meaning of search queries, instead of merely matching keywords.
+
+It uses natural language processing and machine learning to interpret the semantics, or meaning, behind queries. This results in more accurate and relevant search results. Semantic search can consider user intent, query context, synonym recognition, and natural language understanding. Its applications range from web search engines to personalized recommendation systems.
+
+Running the app
+In this section I will walk you through how to deploy and run this app.
+
+Prerequisites
+To run this app, you need the following:
+
+An OpenAI API key
+Pinecone API Key
+Up and running
+To run the app locally, follow these steps:
+
+Clone this repo
+git clone git@github.com:dabit3/semantic-search-nextjs-pinecone-langchain-chatgpt.git
+Change into the directory and install the dependencies using either NPM or Yarn
+
+Copy .example.env.local to a new file called .env.local and update with your API keys and environment.
+
+Be sure your environment is an actual environment given to you by Pinecone, like us-west4-gcp-free
+
+(Optional) - Add your own custom text or markdown files into the /documents folder.
+
+Run the app:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Need to know
+When creating the embeddings and the index, it can take up to 2-4 minutes for the index to fully initialize. There is a settimeout function of 180 seconds in the utils that waits for the index to be created.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+If the initialization takes longer, then it will fail the first time you try to create the embeddings. If this happens, visit the Pinecone console to watch and wait for the status of your index being created to finish, then run the function again.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Running a query
+The pre-configured app data is about the Lens protocol developer documentation, so it will only understand questions about it unless you replace it with your own data. Here are a couple of questions you might ask it with the default data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+What is the difference between Lens and traditional social platforms
+What is the difference between the Lens SDK and the Lens API
+How to query Lens data in bulk?
+The base of this project was guided by this Node.js tutorial, with some restructuring and ported over to Next.js. You can also follow them here on Twitter!
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Getting your data
+I recommend checking out GPT Repository Loader which makes it simple to turn any GitHub repo into a text format, preserving the structure of the files and file contents, making it easy to chop up and save into pinecone using my codebase.
